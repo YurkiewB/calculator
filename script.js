@@ -4,13 +4,13 @@ function add(num1, num2) {
     return sum
 };
   
-function subtract(num1, num2) {
+function subtract(num1, num2) { 
     let difference = num1 - num2
     return difference
 };
 
 function multiply(num1, num2) {
-    let product = num1 * num2
+    let product = num1 * num2 
     return product
 };
 
@@ -42,10 +42,13 @@ const clear = document.getElementById("clear")
 
 function clearDisplay()
 {
-    display.textContent = 0
-    if (working.includes("+") || working.includes("-") || working.includes("/") || working.includes)
+    console.log(working)
+    if (display.textContent = "0")
     {
-
+        working = ""
+    }
+    else {
+        display.textContent = "0"
     }
 }
 
@@ -64,6 +67,7 @@ function appendNumber(number) {
     {
         display.textContent = ""
     }
+
     if (number === "." && display.textContent.includes(`${number}`))
     {
         return 
@@ -74,9 +78,16 @@ function appendNumber(number) {
         return
     }
     
-    display.textContent += number
-    working = working + display.textContent
-
+    if (working[working.length - 1] === "+" || working[working.length - 1] === "-" | working[working.length - 1] === "/" | working[working.length - 1] === "X")
+    {
+        display.textContent = ""
+        display.textContent = number
+        working += number
+    }
+    else {
+        display.textContent += number
+        working += display.textContent
+    }
 }
 
 
@@ -87,10 +98,12 @@ function appendOperator(operator)
         if (display.textContent[0] === "-")
         {
             display.textContent = display.textContent.slice(1, display.textContent.length)
+            working = display.textContent
         }
         else
         {
             display.textContent = "-" + display.textContent
+            working = display.textContent
         }
     }
 
@@ -99,7 +112,7 @@ function appendOperator(operator)
         working = working.slice(0, working.length - 1)
         working += operator
     }
-    else {
+    else if (operator != "+/-") {
         working += operator
     }
     console.log(working)
