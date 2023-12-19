@@ -1,5 +1,4 @@
 function add(num1, num2) {
-
     let sum = num1 + num2
     return sum
 };
@@ -26,12 +25,23 @@ function percent(num1) {
 
 
 function operate(operation, num1, num2) {
-    return operation(num1, num2)
+    console.log(`operate: ${operation}(${num1}, ${num2})`);
+    const result = operation(num1, num2);
+    console.log(`Result: ${result}`);
+    return result;
 }
 
 let firstInputNum 
 let secondInputNum
 let working = ""
+
+const operation_table = {
+    "+" : add,
+    "-" : subtract,
+    "/" : divide,
+    "X" : multiply,
+    "%" : percent
+}
 
 let buttons = document.querySelectorAll("[data-number]")
 let operators = document.querySelectorAll("[data-operations]")
@@ -43,7 +53,7 @@ const clear = document.getElementById("clear")
 function clearDisplay()
 {
     console.log(working)
-    if (display.textContent = "0")
+    if (display.textContent === "0")
     {
         working = ""
     }
@@ -93,6 +103,29 @@ function appendNumber(number) {
 
 function appendOperator(operator)
 {
+    if (operator === "=")
+    { 
+        let result
+        for (const operation in operation_table) 
+        {
+            working_array = working.split(`${operation}`)
+            console.log(working_array)
+            firstInputNum = parseInt(working_array[0])
+            secondInputNum =  parseInt(working_array[1])
+
+            if (working.slice(1, working.length).includes(`${operation}`))
+            {
+                let compute = operation_table[operation]
+                result = operate(compute, firstInputNum, secondInputNum)
+            }
+            console.log(operation, operation_table[operation])
+        }
+
+        display.textContent = result
+        working = result
+        console.log("working", working)
+    }
+
     if (operator === "+/-")
     {
         if (display.textContent[0] === "-")
