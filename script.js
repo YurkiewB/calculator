@@ -14,15 +14,19 @@ function multiply(num1, num2) {
 };
 
 function divide(num1, num2) {
-    let quotent = num1 / num2
-    return quotent
+    if (num2 === 0) {
+        alert("Divide by Zero error")
+    }
+    else {
+        let quotent = num1 / num2
+        return quotent
+    }   
 }
 
 function percent(num1) {
     let percent = num1 / 100 
     return percent
 }
-
 
 function operate(operation, num1, num2) {
     console.log(`operate: ${operation}(${num1}, ${num2})`);
@@ -52,13 +56,13 @@ const clear = document.getElementById("clear")
 
 function clearDisplay()
 {
-    console.log(working)
     if (display.textContent === "0")
     {
         working = ""
     }
     else {
         display.textContent = "0"
+        working = working.slice(0, working.length - 1)
     }
 }
 
@@ -77,7 +81,7 @@ function appendNumber(number) {
     {
         display.textContent = ""
     }
-
+    
     if (number === "." && display.textContent.includes(`${number}`))
     {
         return 
@@ -87,38 +91,47 @@ function appendNumber(number) {
     {
         return
     }
-    
-    if (working[working.length - 1] === "+" || working[working.length - 1] === "-" | working[working.length - 1] === "/" | working[working.length - 1] === "X")
+
+    if (working[working.length - 1] === "+" || working[working.length - 1] === "-" || working[working.length - 1] === "/" || working[working.length - 1] === "X")
     {
         display.textContent = ""
         display.textContent = number
         working += number
+        console.log("if", working)
+    }
+    else if (working.includes("+") || working.includes("-") || working.includes("/") || working.includes("X")){
+        display.textContent += number
+        working += number
+        console.log("else if", working)
     }
     else {
         display.textContent += number
-        working += display.textContent
+        working = display.textContent
+        console.log("else", working)
     }
+    
+    
 }
 
 
 function appendOperator(operator)
 {
-    if (operator === "=")
-    { 
-        let result
+    if (working.includes("+") || working.includes("-") || working.includes("/") || working.includes("X")) {
+        let result = 0
         for (const operation in operation_table) 
         {
             working_array = working.split(`${operation}`)
             console.log(working_array)
-            firstInputNum = parseInt(working_array[0])
-            secondInputNum =  parseInt(working_array[1])
+            firstInputNum = parseFloat(working_array[0])
+            secondInputNum =  parseFloat(working_array[1])
+            console.log("firstNum", firstInputNum)
+            console.log("secondNum", secondInputNum)
 
             if (working.slice(1, working.length).includes(`${operation}`))
             {
                 let compute = operation_table[operation]
-                result = operate(compute, firstInputNum, secondInputNum)
+                result = Math.round(operate(compute, firstInputNum, secondInputNum) * 1000) / 1000
             }
-            console.log(operation, operation_table[operation])
         }
 
         display.textContent = result
@@ -140,7 +153,7 @@ function appendOperator(operator)
         }
     }
 
-    if (working[working.length - 1] === "+" || working[working.length - 1] === "-" | working[working.length - 1] === "/" | working[working.length - 1] === "X") {
+    if (working[working.length - 1] === "+" || working[working.length - 1] === "-" || working[working.length - 1] === "/" || working[working.length - 1] === "X") {
         console.log("should change operation")
         working = working.slice(0, working.length - 1)
         working += operator
@@ -148,12 +161,5 @@ function appendOperator(operator)
     else if (operator != "+/-") {
         working += operator
     }
-    console.log(working)
+
 }
-
-
-
-
-
-
-
